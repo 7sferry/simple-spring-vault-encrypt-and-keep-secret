@@ -1,0 +1,22 @@
+spring:
+  config:
+    import: vault://
+  cloud:
+    vault:
+      authentication: TOKEN
+      token: s.Rx3qmf9848cjr8k4OhA39T3g
+      host: localhost
+      port: 8200
+      scheme: http
+      kv:
+        backend: testing
+        application-name: auth
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: 'jdbc:postgresql://localhost:5432/springboobs'
+    username: ${user-db}
+    password: ${pass-db}
+
