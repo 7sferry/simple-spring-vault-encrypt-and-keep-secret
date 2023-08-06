@@ -8,12 +8,12 @@ import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.support.Ciphertext;
 import org.springframework.vault.support.Plaintext;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 /************************
  * Made by [MR Ferry™]  *
@@ -52,24 +52,24 @@ public class ChildController{
 	@SneakyThrows
 	@GetMapping("encryptFile")
 	void encryptFile(){
-		File file = new File("pom.xml");
+		File file = new File("C:\\readme.pdf");
 		byte[] bytes = Files.readAllBytes(file.toPath());
 		Ciphertext encrypt = vaultOperations.opsForTransit()
 				.encrypt("nik", Plaintext.of(bytes));
 		byte[] context = encrypt.getCiphertext().getBytes(StandardCharsets.UTF_8);
-		OutputStream outputStream = new FileOutputStream(new File("pom.enc"));
+		OutputStream outputStream = new FileOutputStream("C:\\readme.pdf.enc");
 		outputStream.write(context);
 	}
 
 	@SneakyThrows
 	@GetMapping("decryptFile")
 	void decryptFile(){
-		File file = new File("pom.enc");
+		File file = new File("C:\\readme.pdf.enc");
 		String string = Files.readString(file.toPath());
 		Plaintext encrypt = vaultOperations.opsForTransit()
 				.decrypt("nik", Ciphertext.of(string));
 		byte[] context = encrypt.getPlaintext();
-		OutputStream outputStream = new FileOutputStream(new File("pom.dec"));
+		OutputStream outputStream = new FileOutputStream("C:\\readme.dec.pdf");
 		outputStream.write(context);
 	}
 
